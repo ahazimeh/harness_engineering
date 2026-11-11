@@ -1,0 +1,38 @@
+The harness is the engineered system surrounding a language model, that turns its single output channel (text) into Action, Persistence, and Measurable Behviour
+6 components of harness:
+    -The Loop
+    -The Tools
+    -The Context
+    -The Environment
+    -The Memory
+    -The Observability
+
+Patterns
+    The react pattern
+    Plan-then-Act
+    Multi-Agent
+
+The Loop
+
+The Tool
+    Good Tool design
+        Small and well-named
+        Clear structured outputs (the modal should clearly recognize between success and failure response)
+        sized for efficient use
+
+The Context
+    We feed everything that is needed for the request
+        -System Prompt
+        -Retrived Documents
+        -Tool Results
+        -Attached Documents
+        -Convo. History
+            Full Replay (pass the whole thing)
+            Compaction
+        -Retrieval (retrieve what you need)
+    first harness Cursor:
+        Cursor rules (system prompt)
+        Codebase Indexing
+        Opened File
+        @ mentioned files
+        Recent Edits (history)
