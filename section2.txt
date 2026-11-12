@@ -17,7 +17,7 @@ The Loop
 The Tool
     Good Tool design
         Small and well-named
-        Clear structured outputs (the modal should clearly recognize between success and failure response)
+        Clear structured outputs (the model should clearly recognize between success and failure response)
         sized for efficient use
 
 The Context
@@ -36,3 +36,33 @@ The Context
         Opened File
         @ mentioned files
         Recent Edits (history)
+The Environment
+    What a good design for enviornment looks like:
+        Bounded Environment // define scope for the environment
+            bound what the harness can access, what env files it has access to...
+                -soft constraints are constraints given by the model and they can be ignored
+                -hard constraints are constraints given to the harness
+        Reproducible // every task should start from a clean environment
+        Inspectable // see stuff, see the processes, files and folders made
+Memory
+    short term
+    long term
+        -usually be in control to what to store in long term memory and don't let it be for the model
+        -retrieve from memory is bounded
+
+The Observability
+    Logs of model calls
+    Traces of tool execution
+    Latency and token metrics
+    Evals
+    
+    When something goes wrong
+        What did the model do
+        In what order
+        With what inputs
+        Why
+    What does a good design looks like
+        Every model call is logged
+        Every tool call is logged
+        Traces that tie sessions together // traceId is for the llm session
+        Evals
