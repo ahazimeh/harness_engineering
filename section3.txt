@@ -1,0 +1,4 @@
+uv venv
+
+uv init --bare     # creates just pyproject.toml (skip if you already have one)
+uv add "openai>=1.50.0" "python-dotenv>=1.0.0"
