@@ -2,3 +2,21 @@ uv venv
 
 uv init --bare     # creates just pyproject.toml (skip if you already have one)
 uv add "openai>=1.50.0" "python-dotenv>=1.0.0"
+
+uv run python -m harness.agent
+
+system_prompt
+    Identify: Who it is and what context it's operating in
+        you are a senior engineer
+    Capabilities: Names the tools, resources, and information available to the model
+        you have access to a read_file tool and a bash tool
+    Contraints: States what the model should not do, or should be cautious about
+        Never run destructive commands without explicit information
+    Output conventions: Specifies how responses should be formatted
+        When returning code, use fenced code blocks with the language tag
+
+Soft Constraints vs Hard Constraints
+    Soft Constraints:
+        tell the model in system prompts with natural language
+    Hard Constraints:
+        Enforced by code
