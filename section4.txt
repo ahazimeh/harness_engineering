@@ -1,0 +1,10 @@
+Tool Registry
+    -Holds tool implementations
+    -Generate OpenAi Tool Schemas
+    -Dispatches Tols
+FileSystem Tools
+    -Workspace scoping
+    -FilesSystem Tools
+Harness Integration
+    -Tool-aware loop
+    -System Prompt Update
