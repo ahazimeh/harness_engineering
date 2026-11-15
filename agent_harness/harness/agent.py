@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 from harness.tools import registry
+from harness.memory import load_agents_md
 
 load_dotenv();
 
@@ -33,14 +34,58 @@ When returning code, use fenced code blocks and specify the language.
 
 You have access to five filesystem tools — read, write, list, mkdir, delete — operating on a workspace directory. Use them whenever a task involves reading, modifying, or organizing files. Paths are relative to
 the workspace root. Prefer reading and writing real files over describing them in conversation.
+
+You also have six git tools — git_status, git_diff, git_log, git_commit, git_checkout, git_branch — for versioning your work. The workspace is
+already initialized as a git repo. Use git to:
+- Commit frequently. Small, focused commits are easier to roll back.
+- Commit before doing anything risky (large rewrites, deleting files, restructuring). A commit before the risky step gives you a recovery point.
+- Write meaningful commit messages — describe what changed and why, in the present tense (e.g., "add user authentication module").
+- Branch experiments. When trying an alternative approach, create a branch first so the main line of work stays intact.
+
+You have one more tool: `bash`. It executes shell commands in the
+workspace. The tool description says which OS and shell you are on;
+write commands for that shell. Use bash for anything the specific tools
+above don't cover: running scripts (python foo.py, node foo.js),
+invoking system utilities, installing packages (pip install ...), or
+exploring the environment.
+
+Prefer the specific tools when they apply. If the task is to read a
+file, use `read`, not `bash("cat file.md")`. If the task is to commit,
+use `git_commit`, not `bash("git commit ...")`. The specific tools are
+safer, faster, and clearer to trace. Reach for `bash` when the specific
+tools don't cover what you need — which is often, because software work
+is varied.
+
+Bash commands see the workspace as their working directory. `cd` inside
+a bash command does not persist to the next tool call; each bash
+invocation starts fresh from the workspace root.
+
+The workspace contains an `AGENTS.md` file — your durable memory across sessions. It is automatically loaded into your context at the start of
+every session. Update it (using the `write` tool) when you learn something worth remembering for future sessions. Good things to write:
+- Project context: what this codebase is, what it does, who uses it
+- Conventions you've observed: code style, libraries, naming patterns
+- Decisions that have been made and the reasoning behind them
+- Gotchas: quirks, non-obvious dependencies, things that have tripped up earlier sessions
+- Active tasks: what's currently being worked on (clear when complete)
+
+When updating AGENTS.md, preserve the existing structure (the section headings). Add to the relevant section instead of replacing the whole file. If the section starts with a parenthetical hint like "(What is
+this project?)", replace the hint with real content as you fill it in.
 """
 
 def run():
     """Run the agent's conversation loop until the user quites."""
 
+    # Load AGENTS.md and assemble the initial message list.       
+    # The first system message is the harness's prompt; the second is the
+    # project's accumulated memory.
+    agents_md = load_agents_md()
+
     # The conversation history. This is the entire memory of the agent.
     # Every turn, we append to it and send the whole thing to the model.
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "system", "content": load_agents_md()}
+    ]
 
     print("Agent read. Type 'quite' or 'exit' to leave.\n")
 

@@ -1,0 +1,2 @@
+# Code As a Meta Tool
+    - Meta tool is a tool that lets the agent contruct other tools at runtime
