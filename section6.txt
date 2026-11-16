@@ -1,0 +1,22 @@
+Why local Execution is a Product Anti-Pattern
+    -Security Polution (every session will leave traces on the host)
+    -Concurrency limits
+    -Replicability
+
+#Security Pollution
+    Pip install pandas
+        -Every package the agent installs to solve one task stays after the task completes
+        -Leftover files not removed pile up in storage and may contain sensitive data
+        -When an agent runs a script, while the agent's operations itself maybe scoped to your workspace, the script is running with full user permissions.
+
+Concurrency and Scale
+    -You can't run 30 agents on one machine. // conflicts
+    -You can't isolate them // an agent mistake could silense another agent's session
+    -You can't reset them. // can't reset the system to before agents started running
+    -You can't template them. // different versioning
+
+It's all an Environment Issue
+    -Starts from a known state every time (solving the pollution problem)
+    -Is disposable (solving the reset problem)
+    -Can be replicated (Solving the templating problem)
+    -Can be spawned multiple times (Solving the concurrency problem)
